@@ -66,7 +66,7 @@ hflights %>% group_by(UniqueCarrier) %>%
   summarise(n = n(),
             moy = mean(AirTime, na.rm = TRUE))
 
-# Tri
+# Groupe et tri
 hflights %>% group_by(UniqueCarrier) %>% 
   summarise(retard_moy = mean(DepDelay, na.rm = TRUE)) %>% 
   arrange(-retard_moy)
