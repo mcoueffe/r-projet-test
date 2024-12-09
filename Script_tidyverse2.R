@@ -67,7 +67,7 @@ tennis_aces_long <-  tennis_aces %>%
 tennis_aces_long
 
 tennis_aces_wide <-  tennis_aces %>% 
-  pivot_wider(names_from = c(Tournoi, Round), values_from = moy_aces)
+  pivot_wider(names_from =  Round, values_from = moy_aces)
 tennis_aces_wide
 
 # ---- Q10
