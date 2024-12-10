@@ -62,3 +62,41 @@ dbGetQuery(con, "SELECT table1.id, table1.nom, table1.latitude,
                 (-1.7028661 - table1.longitude)*(-1.7028661 - table1.longitude)+(48.1179151-table1.latitude)*(48.1179151-table1.latitude) as distance
                 FROM Topologie AS table1
            ORDER BY distance")
+
+# ---- Q10
+dbDisconnect(con)
+
+# ----------------------------------------------------------------------------
+# ---- Musique
+
+# ---- Q1
+con <- dbConnect(RSQLite::SQLite(), "chinook.db")
+dbListTables(con)
+
+Playlist_db <- tbl(con, "Playlist")
+Track_db <- tbl(con, "Track")
+PlaylistTrack_db <- tbl(con, "PlaylistTrack")
+
+# ---- Q2
+dbListFields(con, "PlaylistTrack")
+dbListFields(con, "Track")
+dbListFields(con, "Playlist")
+
+Track_db %>% left_join(PlaylistTrack_db, by = "TrackId") %>% 
+  left_join(Playlist_db, by = "PlaylistId") %>% 
+  group_by(PlaylistId, Name.y) %>% 
+  summarise(n = n()) %>% 
+  arrange(-n)
+
+# ---- Q3
+Album_db <- tbl(con, "Album")
+
+# ---- Q4
+Playlist_db %>% filter(Name == "Classical")  %>% 
+  left_join(PlaylistTrack_db, by = "PlaylistId") %>%
+  left_join(Track_db, by = "TrackId") %>% 
+  left_join(Album_db, by = "AlbumId") %>% 
+  show_query()
+
+# ---- Q6
+dbDisconnect(con)
