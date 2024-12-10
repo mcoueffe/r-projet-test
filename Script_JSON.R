@@ -46,8 +46,19 @@ planets[["next"]]
 
 # ---- Q3
 planets_tb <- tibble(planets[["results"]])
-for (i in 2:(planets[["count"]]/dim(planets[["results"]])[1])){
-  temp <- fromJSON(paste0("https://swapi-node.vercel.app/api/planets", "?page=", i))
+for (i in 2:(planets[["pages"]])){
+  temp <- fromJSON(paste0("https://swapi-node.vercel.app/api/planets?page=", i))
+  temp <- tibble(temp[["results"]])
+  planets_tb <- bind_rows(planets_tb, temp)
+}
+planets_tb
+
+# Option 2
+planets_tb <- tibble(planets[["results"]])
+page_next <- planets[["next"]]
+for (i in 2:(planets[["pages"]])){
+  temp <- fromJSON(paste0("https://swapi-node.vercel.app", page_next))
+  page_next <- temp[["next"]]
   temp <- tibble(temp[["results"]])
   planets_tb <- bind_rows(planets_tb, temp)
 }
